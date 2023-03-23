@@ -1,5 +1,7 @@
 <?php
 
+namespace Blackjack;
+
 require_once('Deck.php');
 require_once('Player.php');
 require_once('Dealer.php');

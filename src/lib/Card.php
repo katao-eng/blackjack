@@ -17,4 +17,9 @@ class Card
     {
         return $this->value;
     }
+
+    public function __toString(): string
+    {
+        return $this->getSuit() . 'の' . $this->getValue();
+    }
 }

@@ -4,6 +4,7 @@ namespace Blackjack\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Blackjack\Deck;
+use Blackjack\Card;
 
 require_once(__DIR__ . '../../lib/Deck.php');
 
@@ -23,8 +24,8 @@ class DeckTest extends TestCase
         $suits = array('ハート', 'クラブ', 'スペード', 'ダイヤ');
         $values = array('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K');
 
-        $this->assertContains($card1->getSuit, $suits);
-        $this->assertContains($card1->getValue, $values);
+        $this->assertContains($card1->getSuit(), $suits);
+        $this->assertContains($card1->getValue(), $values);
     }
 
     public function testGetCards(): void

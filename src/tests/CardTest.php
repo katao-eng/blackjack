@@ -20,4 +20,10 @@ class CardTest extends TestCase
         $card = new Card('クラブ', '5');
         $this->assertSame('5', $card->getValue());
     }
+
+    public function testToString(): void
+    {
+        $card = new Card('クラブ', '5');
+        $this->assertSame('クラブの5', $card->__toString());
+    }
 }

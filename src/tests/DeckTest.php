@@ -28,6 +28,9 @@ class DeckTest extends TestCase
         $this->assertCount(50, $deck->getCards());
 
         $suits = array('ハート', 'クラブ', 'スペード', 'ダイヤ');
-        $values = array('');
+        $values = array('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K');
+
+        $this->assertContains($card1->getSuit, $suits);
+        $this->assertContains($card1->getValue, $values);
     }
 }

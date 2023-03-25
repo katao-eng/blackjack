@@ -7,7 +7,12 @@ abstract class Hand
     protected const BLACKJACK = 21;
 
     protected string $name;
-    protected int $value;
+    protected int $value; //Todo $cardsに変更のため削除
+    /**
+     * Summary of cards
+     * @var array<int, Card>
+     */
+    protected array $cards;
 
     abstract public function addCard(): void;
     abstract public function hitOrStand(): void;
@@ -19,7 +24,31 @@ abstract class Hand
 
     public function getValue(): int
     {
-        return $this->value;
+        $value = 0;
+        $aceCount = 0;
+
+        // カードの合計を計算
+        foreach ($this->cards as $card) {
+            $cardValue = $card->getValue();
+            if ($cardValue === 'A') {
+                $aceCount++;
+            } elseif (is_numeric($cardValue)) {
+                $value += intval($cardValue);
+            } else {
+                $value += 10;
+            }
+        }
+
+        // Aの判定
+        for ($i = 0; $i < $aceCount; $i++) {
+            if ($value + 11 <= self::BLACKJACK) {
+                $value += 11;
+            } else {
+                $value += 1;
+            }
+        }
+
+        return $value;
     }
 
     public function showHandValue(): void

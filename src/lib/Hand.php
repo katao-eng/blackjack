@@ -7,7 +7,6 @@ abstract class Hand
     protected const BLACKJACK = 21;
 
     protected string $name;
-    protected int $value; //Todo $cardsに変更のため削除
     /**
      * Summary of cards
      * @var array<int, Card>

@@ -11,6 +11,41 @@ require_once(__DIR__ . '../../lib/Hand.php');
 
 class HandTest extends TestCase
 {
+    /**
+     * Summary of cardsValue20
+     * @var array<int, Card>
+     */
+    private array $cardsValue20;
+    /**
+     * Summary of cardsValue21
+     * @var array<int, Card>
+     */
+    private array $cardsValue21;
+    /**
+     * Summary of cardsValue22
+     * @var array<int, Card>
+     */
+    private array $cardsValue22;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->cardsValue20 = array(
+            new Card('ハート', 'A'),
+            new Card('スペード', '9'),
+        );
+        $this->cardsValue21 = array(
+            new Card('ハート', 'A'),
+            new Card('スペード', 'J'),
+        );
+        $this->cardsValue22 = array(
+            new Card('ハート', '2'),
+            new Card('ハート', '10'),
+            new Card('スペード', '10'),
+        );
+    }
+
     public function testGetName(): void
     {
         $stub = $this->getMockForAbstractClass(Hand::class);
@@ -69,7 +104,7 @@ class HandTest extends TestCase
     {
         $stub = $this->getMockForAbstractClass(Hand::class);
         $this->setPrivateProperty($stub, 'name', 'プレイヤー');
-        $this->setPrivateProperty($stub, 'value', 21); //Todo プロパティcardsへ対応
+        $this->setPrivateProperty($stub, 'cards', $this->cardsValue21);
 
         $this->expectOutputString('プレイヤーの得点は21です。');
         $stub->showHandValue();
@@ -84,42 +119,40 @@ class HandTest extends TestCase
         $stubDealer = $this->getMockForAbstractClass(Hand::class);
         $this->setPrivateProperty($stubDealer, 'name', 'ディーラー');
 
-        //Todo ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ プロパティcardsへ対応 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
         // プレイヤーがバーストした場合
-        $this->setPrivateProperty($stubPlayer, 'value', 22);
-        $this->setPrivateProperty($stubDealer, 'value', 21);
+        $this->setPrivateProperty($stubPlayer, 'cards', $this->cardsValue22);
+        $this->setPrivateProperty($stubDealer, 'cards', $this->cardsValue21);
         $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'ディーラーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // ディーラーがバーストした場合
-        $this->setPrivateProperty($stubPlayer, 'value', 21);
-        $this->setPrivateProperty($stubDealer, 'value', 22);
+        $this->setPrivateProperty($stubPlayer, 'cards', $this->cardsValue21);
+        $this->setPrivateProperty($stubDealer, 'cards', $this->cardsValue22);
         $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'プレイヤーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // プレイヤーが勝利する場合
-        $this->setPrivateProperty($stubPlayer, 'value', 21);
-        $this->setPrivateProperty($stubDealer, 'value', 20);
+        $this->setPrivateProperty($stubPlayer, 'cards', $this->cardsValue21);
+        $this->setPrivateProperty($stubDealer, 'cards', $this->cardsValue20);
         $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'プレイヤーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // ディーラーが勝利する場合
-        $this->setPrivateProperty($stubPlayer, 'value', 19);
-        $this->setPrivateProperty($stubDealer, 'value', 20);
+        $this->setPrivateProperty($stubPlayer, 'cards', $this->cardsValue20);
+        $this->setPrivateProperty($stubDealer, 'cards', $this->cardsValue21);
         $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'ディーラーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // 引き分けの場合
-        $this->setPrivateProperty($stubPlayer, 'value', 20);
-        $this->setPrivateProperty($stubDealer, 'value', 20);
+        $this->setPrivateProperty($stubPlayer, 'cards', $this->cardsValue20);
+        $this->setPrivateProperty($stubDealer, 'cards', $this->cardsValue20);
         $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = '引き分けです。' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
-        //Todo ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ プロパティcardsへ対応 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
     }
 
     public function testIsBusted(): void
@@ -129,14 +162,23 @@ class HandTest extends TestCase
         $method = $reflection->getMethod('isBusted');
         $method->setAccessible(true);
 
-        $this->setPrivateProperty($stub, 'value', 22); //Todo プロパティcardsへ対応
+        // カード合計が21を超えるとバーストする
+        $this->setPrivateProperty($stub, 'cards', $this->cardsValue22);
         $this->assertTrue($method->invoke($stub));
 
-        $this->setPrivateProperty($stub, 'value', 21); //Todo プロパティcardsへ対応
+        // カード合計が21以下だとバーストしない
+        $this->setPrivateProperty($stub, 'cards', $this->cardsValue21);
         $this->assertFalse($method->invoke($stub));
     }
 
-    private function setPrivateProperty(Hand $object, string $propertyName, /* Todo 型見直し */ mixed $value): void
+    /**
+     * Summary of setPrivateProperty
+     * @param Hand $object
+     * @param string $propertyName
+     * @param string|array<int, Card> $value
+     * @return void
+     */
+    private function setPrivateProperty(Hand $object, string $propertyName, string|array $value): void
     {
         $reflection = new ReflectionObject($object);
         $property = $reflection->getProperty($propertyName);

@@ -4,6 +4,7 @@ namespace Blackjack\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Blackjack\Hand;
+use ReflectionObject;
 
 require_once(__DIR__ . '../../lib/Hand.php');
 
@@ -12,35 +13,22 @@ class HandTest extends TestCase
     public function testGetName(): void
     {
         $stub = $this->getMockForAbstractClass(Hand::class);
-        $reflection = new \ReflectionObject($stub);
-        $property = $reflection->getProperty('name');
-        $property->setAccessible(true);
-        $property->setValue($stub, 'プレイヤー');
+        $this->setPrivateProperty($stub, 'name', 'プレイヤー');
         $this->assertSame('プレイヤー', $stub->getName());
     }
 
     public function testGetValue(): void
     {
         $stub = $this->getMockForAbstractClass(Hand::class);
-        $reflection = new \ReflectionObject($stub);
-        $property = $reflection->getProperty('value');
-        $property->setAccessible(true);
-        $property->setValue($stub, 21);
+        $this->setPrivateProperty($stub, 'value', 21);
         $this->assertSame(21, $stub->getValue());
     }
 
     public function testShowHandValue(): void
     {
         $stub = $this->getMockForAbstractClass(Hand::class);
-        $reflection = new \ReflectionObject($stub);
-
-        $nameProperty = $reflection->getProperty('name');
-        $nameProperty->setAccessible(true);
-        $nameProperty->setValue($stub, 'プレイヤー');
-
-        $valueProperty = $reflection->getProperty('value');
-        $valueProperty->setAccessible(true);
-        $valueProperty->setValue($stub, 21);
+        $this->setPrivateProperty($stub, 'name', 'プレイヤー');
+        $this->setPrivateProperty($stub, 'value', 21);
 
         $this->expectOutputString('プレイヤーの得点は21です。');
         $stub->showHandValue();
@@ -48,30 +36,16 @@ class HandTest extends TestCase
 
     public function testCompareHands(): void
     {
-        // プレイヤーがバーストした場合
+        // プレイヤーのスタブ生成
         $stubPlayer = $this->getMockForAbstractClass(Hand::class);
-        $playerReflection = new \ReflectionObject($stubPlayer);
-
-        $playerNameProperty = $playerReflection->getProperty('name');
-        $playerNameProperty->setAccessible(true);
-        $playerNameProperty->setValue($stubPlayer, 'プレイヤー');
-
-        $playerValueProperty = $playerReflection->getProperty('value');
-        $playerValueProperty->setAccessible(true);
-        $playerValueProperty->setValue($stubPlayer, 22);
-
-
+        $this->setPrivateProperty($stubPlayer, 'name', 'プレイヤー');
+        // ディーラーのスタブ生成
         $stubDealer = $this->getMockForAbstractClass(Hand::class);
-        $dealerReflection = new \ReflectionObject($stubDealer);
+        $this->setPrivateProperty($stubDealer, 'name', 'ディーラー');
 
-        $dealerNameProperty = $dealerReflection->getProperty('name');
-        $dealerNameProperty->setAccessible(true);
-        $dealerNameProperty->setValue($stubDealer, 'ディーラー');
-
-        $dealerValueProperty = $dealerReflection->getProperty('value');
-        $dealerValueProperty->setAccessible(true);
-        $dealerValueProperty->setValue($stubDealer, 21);
-
+        // プレイヤーがバーストした場合
+        $this->setPrivateProperty($stubPlayer, 'value', 22);
+        $this->setPrivateProperty($stubDealer, 'value', 21);
         ob_start();
         Hand::compareHands($stubPlayer, $stubDealer);
         $output = ob_get_clean();
@@ -79,8 +53,8 @@ class HandTest extends TestCase
         $this->assertSame($expectedOuntput, $output);
 
         // ディーラーがバーストした場合
-        $playerValueProperty->setValue($stubPlayer, 21);
-        $dealerValueProperty->setValue($stubDealer, 22);
+        $this->setPrivateProperty($stubPlayer, 'value', 21);
+        $this->setPrivateProperty($stubDealer, 'value', 22);
         ob_start();
         Hand::compareHands($stubPlayer, $stubDealer);
         $output = ob_get_clean();
@@ -88,8 +62,8 @@ class HandTest extends TestCase
         $this->assertSame($expectedOuntput, $output);
 
         // プレイヤーが勝利する場合
-        $playerValueProperty->setValue($stubPlayer, 21);
-        $dealerValueProperty->setValue($stubDealer, 20);
+        $this->setPrivateProperty($stubPlayer, 'value', 21);
+        $this->setPrivateProperty($stubDealer, 'value', 20);
         ob_start();
         Hand::compareHands($stubPlayer, $stubDealer);
         $output = ob_get_clean();
@@ -97,8 +71,8 @@ class HandTest extends TestCase
         $this->assertSame($expectedOuntput, $output);
 
         // ディーラーが勝利する場合
-        $playerValueProperty->setValue($stubPlayer, 19);
-        $dealerValueProperty->setValue($stubDealer, 20);
+        $this->setPrivateProperty($stubPlayer, 'value', 19);
+        $this->setPrivateProperty($stubDealer, 'value', 20);
         ob_start();
         Hand::compareHands($stubPlayer, $stubDealer);
         $output = ob_get_clean();
@@ -106,8 +80,8 @@ class HandTest extends TestCase
         $this->assertSame($expectedOuntput, $output);
 
         // 引き分けの場合
-        $playerValueProperty->setValue($stubPlayer, 20);
-        $dealerValueProperty->setValue($stubDealer, 20);
+        $this->setPrivateProperty($stubPlayer, 'value', 20);
+        $this->setPrivateProperty($stubDealer, 'value', 20);
         ob_start();
         Hand::compareHands($stubPlayer, $stubDealer);
         $output = ob_get_clean();
@@ -115,20 +89,25 @@ class HandTest extends TestCase
         $this->assertSame($expectedOuntput, $output);
     }
 
+    private function setPrivateProperty(Hand $object, string $propertyName, int|string $value): void
+    {
+        $reflection = new ReflectionObject($object);
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+        $property->setValue($object, $value);
+    }
+
     public function testIsBusted(): void
     {
         $stub = $this->getMockForAbstractClass(Hand::class);
-        $reflection = new \ReflectionObject($stub);
-
+        $reflection = new ReflectionObject($stub);
         $method = $reflection->getMethod('isBusted');
         $method->setAccessible(true);
 
-        $property = $reflection->getProperty('value');
-        $property->setAccessible(true);
-        $property->setValue($stub, 22);
+        $this->setPrivateProperty($stub, 'value', 22);
         $this->assertTrue($method->invoke($stub));
 
-        $property->setValue($stub, 21);
+        $this->setPrivateProperty($stub, 'value', 21);
         $this->assertFalse($method->invoke($stub));
     }
 }

@@ -6,11 +6,11 @@ abstract class Hand
 {
     protected const BLACKJACK = 21;
 
-    protected $name;
-    protected $value;
+    protected string $name;
+    protected int $value;
 
-    abstract public function addCard();
-    abstract public function hitOrStand();
+    abstract public function addCard(): void;
+    abstract public function hitOrStand(): void;
 
     public function getName(): string
     {

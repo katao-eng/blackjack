@@ -46,55 +46,37 @@ class HandTest extends TestCase
         // プレイヤーがバーストした場合
         $this->setPrivateProperty($stubPlayer, 'value', 22);
         $this->setPrivateProperty($stubDealer, 'value', 21);
-        ob_start();
-        Hand::compareHands($stubPlayer, $stubDealer);
-        $output = ob_get_clean();
+        $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'ディーラーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // ディーラーがバーストした場合
         $this->setPrivateProperty($stubPlayer, 'value', 21);
         $this->setPrivateProperty($stubDealer, 'value', 22);
-        ob_start();
-        Hand::compareHands($stubPlayer, $stubDealer);
-        $output = ob_get_clean();
+        $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'プレイヤーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // プレイヤーが勝利する場合
         $this->setPrivateProperty($stubPlayer, 'value', 21);
         $this->setPrivateProperty($stubDealer, 'value', 20);
-        ob_start();
-        Hand::compareHands($stubPlayer, $stubDealer);
-        $output = ob_get_clean();
+        $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'プレイヤーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // ディーラーが勝利する場合
         $this->setPrivateProperty($stubPlayer, 'value', 19);
         $this->setPrivateProperty($stubDealer, 'value', 20);
-        ob_start();
-        Hand::compareHands($stubPlayer, $stubDealer);
-        $output = ob_get_clean();
+        $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = 'ディーラーの勝ちです!' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
 
         // 引き分けの場合
         $this->setPrivateProperty($stubPlayer, 'value', 20);
         $this->setPrivateProperty($stubDealer, 'value', 20);
-        ob_start();
-        Hand::compareHands($stubPlayer, $stubDealer);
-        $output = ob_get_clean();
+        $output = $this->compareHandsToString($stubPlayer, $stubDealer);
         $expectedOuntput = '引き分けです。' . PHP_EOL . 'ブラックジャックを終了します。' . PHP_EOL;
         $this->assertSame($expectedOuntput, $output);
-    }
-
-    private function setPrivateProperty(Hand $object, string $propertyName, int|string $value): void
-    {
-        $reflection = new ReflectionObject($object);
-        $property = $reflection->getProperty($propertyName);
-        $property->setAccessible(true);
-        $property->setValue($object, $value);
     }
 
     public function testIsBusted(): void
@@ -109,5 +91,20 @@ class HandTest extends TestCase
 
         $this->setPrivateProperty($stub, 'value', 21);
         $this->assertFalse($method->invoke($stub));
+    }
+
+    private function setPrivateProperty(Hand $object, string $propertyName, int|string $value): void
+    {
+        $reflection = new ReflectionObject($object);
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+        $property->setValue($object, $value);
+    }
+
+    private function compareHandsToString(Hand $stubPlayer, Hand $stubDealer): string
+    {
+        ob_start();
+        Hand::compareHands($stubPlayer, $stubDealer);
+        return ob_get_clean();
     }
 }

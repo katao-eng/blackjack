@@ -5,6 +5,11 @@ namespace Blackjack;
 abstract class Hand
 {
     protected const BLACKJACK = 21;
+    protected const INPUT_CHECK = array('Y', 'N');
+    protected const CARD_DRAW_MSG = 'カードを引きますか？（Y/N）';
+    protected const YN_INPUT_MSG = 'YかNで入力してください。';
+    private const EVEN_MSG = '引き分けです。';
+    private const BLACKJACK_END_MSG = 'ブラックジャックを終了します。';
 
     protected string $name;
     /**
@@ -13,7 +18,7 @@ abstract class Hand
      */
     protected array $cards = array();
 
-    abstract public function hitOrStand(): void;
+    abstract public function hitOrStand(Deck $deck): void;
 
     public function getName(): string
     {
@@ -81,22 +86,32 @@ abstract class Hand
 
     public static function compareHands(Hand $player, Hand $dealer): void
     {
-        $result = '引き分けです。';
+        $result = self::EVEN_MSG;
 
         if ($player->isBusted()) {
-            $result = "{$dealer->name}の勝ちです!";
+            $result = self::getWinnerMsg($dealer);
         } elseif ($dealer->isBusted() || $player->getValue() > $dealer->getValue()) {
-            $result = "{$player->name}の勝ちです!";
+            $result = self::getWinnerMsg($player);
         } elseif ($dealer->getValue() > $player->getValue()) {
-            $result = "{$dealer->name}の勝ちです!";
+            $result = self::getWinnerMsg($dealer);
         }
 
         echo $result . PHP_EOL;
-        echo 'ブラックジャックを終了します。' . PHP_EOL;
+        echo self::BLACKJACK_END_MSG . PHP_EOL;
+    }
+
+    private function getWinnerMsg(Hand $winner): string
+    {
+        return "{$winner->name}の勝ちです!";
     }
 
     protected function isBusted(): bool
     {
         return $this->getValue() > self::BLACKJACK;
+    }
+
+    protected function getCurrentValueMsg(): string
+    {
+        return "{$this->name}の現在の得点は{$this->getValue()}です。";
     }
 }

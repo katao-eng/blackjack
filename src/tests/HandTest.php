@@ -119,8 +119,44 @@ class HandTest extends TestCase
         $stub->addCard($card);
         $this->assertContains($card, $stub->getCards());
         $this->assertCount(1, $stub->getCards());
-        $stub->addCard($card, false);
+        $stub->addCard($card);
         $this->assertCount(2, $stub->getCards());
+    }
+
+    public function testShowDrawCard(): void
+    {
+        $stub = $this->getMockForAbstractClass(Hand::class);
+        $this->setPrivateProperty($stub, 'name', 'ディーラー');
+        $card = new Card('ハート', '3');
+
+        $cards = array(
+            $card,
+        );
+        $this->setPrivateProperty($stub, 'cards', $cards);
+
+        ob_start();
+        $stub->showDrawCard($card);
+        $output = ob_get_clean();
+        $expectedOuntput = 'ディーラーの引いたカードはハートの3です。' . PHP_EOL;
+        $this->assertSame($expectedOuntput, $output);
+    }
+
+    public function testHideDrawCard(): void
+    {
+        $stub = $this->getMockForAbstractClass(Hand::class);
+        $this->setPrivateProperty($stub, 'name', 'ディーラー');
+
+        $cards = array(
+            new Card('ハート', '3'),
+            new Card('スペード', 'J'),
+        );
+        $this->setPrivateProperty($stub, 'cards', $cards);
+
+        ob_start();
+        $stub->hideDrawCard();
+        $output = ob_get_clean();
+        $expectedOuntput = 'ディーラーの引いた2枚目のカードはわかりません。' . PHP_EOL;
+        $this->assertSame($expectedOuntput, $output);
     }
 
     public function testCompareHands(): void

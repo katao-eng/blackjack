@@ -9,7 +9,7 @@ require_once('Hand.php');
 
 class Game
 {
-    private const FACE_DOWN_CARD_FLG = false;
+    private const HIDE_CARD = false;
 
     private $deck;
     private $player;
@@ -22,10 +22,22 @@ class Game
         $this->dealer = new Dealer();
 
         echo 'ブラックジャックを開始します。' . PHP_EOL;
-        $this->player->addCard($this->deck->dealCard());
-        $this->player->addCard($this->deck->dealCard());
+        // プレイヤー1枚目ドロー
+        $playerCard1 = $this->deck->dealCard();
+        $this->player->addCard($playerCard1);
+        $this->player->showDrawCard($playerCard1);
+        // プレイヤー2枚目ドロー
+        $playerCard2 = $this->deck->dealCard();
+        $this->player->addCard($playerCard2);
+        $this->player->showDrawCard($playerCard2);
+        // ディーラー1枚目ドロー
+        $dealerCard1 = $this->deck->dealCard();
+        $this->dealer->addCard($dealerCard1);
+        $this->dealer->showDrawCard($dealerCard1);
+        // ディーラー2枚目ドロー
         $this->dealer->addCard($this->deck->dealCard());
-        $this->dealer->addCard($this->deck->dealCard(), self::FACE_DOWN_CARD_FLG);
+        $this->dealer->hideDrawCard();
+
         // プレイヤーのターン
         $this->player->hitOrStand();
         // ディーラーのターン

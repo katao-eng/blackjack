@@ -11,14 +11,22 @@ abstract class Hand
      * Summary of cards
      * @var array<int, Card>
      */
-    protected array $cards;
+    protected array $cards = array();
 
-    abstract public function addCard(): void;
     abstract public function hitOrStand(): void;
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Summary of getCards
+     * @return array<int, Card>
+     */
+    public function getCards(): array
+    {
+        return $this->cards;
     }
 
     public function getValue(): int
@@ -53,6 +61,18 @@ abstract class Hand
     public function showHandValue(): void
     {
         echo "{$this->name}の得点は{$this->getValue()}です。";
+    }
+
+    public function addCard(Card $card, bool $showFlg = true): void
+    {
+        array_push($this->cards, $card);
+        $cardQty = count($this->cards);
+
+        if ($showFlg) {
+            echo "{$this->name}の引いたカードは{$card->__toString()}です。" . PHP_EOL;
+        } else {
+            echo "{$this->name}の引いた{$cardQty}枚目のカードはわかりません。" . PHP_EOL;
+        }
     }
 
     public static function compareHands(Hand $player, Hand $dealer): void

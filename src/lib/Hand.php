@@ -63,16 +63,20 @@ abstract class Hand
         echo "{$this->name}の得点は{$this->getValue()}です。";
     }
 
-    public function addCard(Card $card, bool $showFlg = true): void
+    public function addCard(Card $card): void
     {
         array_push($this->cards, $card);
-        $cardQty = count($this->cards);
+    }
 
-        if ($showFlg) {
-            echo "{$this->name}の引いたカードは{$card->__toString()}です。" . PHP_EOL;
-        } else {
-            echo "{$this->name}の引いた{$cardQty}枚目のカードはわかりません。" . PHP_EOL;
-        }
+    public function showDrawCard(Card $card): void
+    {
+        echo "{$this->name}の引いたカードは{$card->__toString()}です。" . PHP_EOL;
+    }
+
+    public function hideDrawCard(): void
+    {
+        $cardQty = count($this->cards);
+        echo "{$this->name}の引いた{$cardQty}枚目のカードはわかりません。" . PHP_EOL;
     }
 
     public static function compareHands(Hand $player, Hand $dealer): void

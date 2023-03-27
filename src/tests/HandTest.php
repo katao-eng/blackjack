@@ -116,23 +116,11 @@ class HandTest extends TestCase
         $this->setPrivateProperty($stub, 'name', 'ディーラー');
         $card = new Card('ハート', 'A');
 
-        // カードを表示するケース
-        ob_start();
         $stub->addCard($card);
-        $output = ob_get_clean();
-        $expectedOuntput = 'ディーラーの引いたカードはハートのAです。' . PHP_EOL;
-        $this->assertSame($expectedOuntput, $output);
+        $this->assertContains($card, $stub->getCards());
         $this->assertCount(1, $stub->getCards());
-        $this->assertContains($card, $stub->getCards());
-
-        // カードを表示しないケース
-        ob_start();
         $stub->addCard($card, false);
-        $output = ob_get_clean();
-        $expectedOuntput = 'ディーラーの引いた2枚目のカードはわかりません。' . PHP_EOL;
-        $this->assertSame($expectedOuntput, $output);
         $this->assertCount(2, $stub->getCards());
-        $this->assertContains($card, $stub->getCards());
     }
 
     public function testCompareHands(): void

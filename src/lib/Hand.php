@@ -100,7 +100,7 @@ abstract class Hand
         echo self::BLACKJACK_END_MSG . PHP_EOL;
     }
 
-    private function getWinnerMsg(Hand $winner): string
+    private static function getWinnerMsg(Hand $winner): string
     {
         return "{$winner->name}の勝ちです!";
     }

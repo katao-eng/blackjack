@@ -1,7 +1,7 @@
 <?php
 
 namespace Blackjack;
-//Todo useに修正
+
 require_once('Deck.php');
 require_once('Player.php');
 require_once('Dealer.php');
@@ -9,8 +9,6 @@ require_once('Hand.php');
 
 class Game
 {
-    private const HIDE_CARD = false;
-
     private $deck;
     private $player;
     private $dealer;

@@ -2,10 +2,10 @@
 
 namespace Blackjack;
 
-require_once('Deck.php');
-require_once('Player.php');
-require_once('Dealer.php');
-require_once('Hand.php');
+use Blackjack\Deck;
+use Blackjack\Player;
+use Blackjack\Dealer;
+use Blackjack\Hand;
 
 class Game
 {

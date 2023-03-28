@@ -2,7 +2,7 @@
 
 namespace Blackjack;
 
-require_once('Card.php');
+use Blackjack\Card;
 
 class Deck
 {

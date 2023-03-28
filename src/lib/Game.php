@@ -1,7 +1,7 @@
 <?php
 
 namespace Blackjack;
-
+//Todo useに修正
 require_once('Deck.php');
 require_once('Player.php');
 require_once('Dealer.php');
@@ -39,10 +39,10 @@ class Game
         $this->dealer->hideDrawCard();
 
         // プレイヤーのターン
-        $this->player->hitOrStand();
+        $this->player->hitOrStand($this->deck);
         // ディーラーのターン
         $this->dealer->showSecondCard();
-        $this->dealer->hitOrStand();
+        $this->dealer->hitOrStand($this->deck);
 
         $this->player->showHandValue();
         $this->dealer->showHandValue();

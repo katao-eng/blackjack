@@ -29,6 +29,6 @@ class Dealer extends Hand
 
     public function showSecondCard(): void
     {
-        echo "{$this->name}の引いた2枚目のカードは{$this->getCards()[1]->__toString()}でした。";
+        echo "{$this->name}の引いた2枚目のカードは{$this->getCards()[1]->__toString()}でした。" . PHP_EOL;
     }
 }

@@ -115,7 +115,7 @@ class HandTest extends TestCase
         $this->setPrivateProperty($stub, 'name', 'プレイヤー');
         $this->setPrivateProperty($stub, 'cards', $this->cardsValue21);
 
-        $this->expectOutputString('プレイヤーの得点は21です。');
+        $this->expectOutputString('プレイヤーの得点は21です。' . PHP_EOL);
         $stub->showHandValue();
     }
 

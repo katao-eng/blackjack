@@ -17,12 +17,12 @@ class Player extends Hand
     public function hitOrStand(Deck $deck): void
     {
         do {
-            echo $this->getCurrentValueMsg() . PHP_EOL . self::CARD_DRAW_MSG . PHP_EOL;
+            echo $this->getCurrentValueMsg() . self::CARD_DRAW_MSG . PHP_EOL;
             $input = trim(fgets(STDIN));
 
             while (!in_array($input, self::INPUT_CHECK)) {
                 echo self::YN_INPUT_MSG . PHP_EOL;
-                echo $this->getCurrentValueMsg() . PHP_EOL . self::CARD_DRAW_MSG . PHP_EOL;
+                echo $this->getCurrentValueMsg() . self::CARD_DRAW_MSG . PHP_EOL;
                 $input = trim(fgets(STDIN));
             }
 

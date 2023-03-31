@@ -12,6 +12,11 @@ require_once(__DIR__ . '../../lib/Hand.php');
 class HandTest extends TestCase
 {
     /**
+     * Summary of cardsValue16
+     * @var array<int, Card>
+     */
+    private array $cardsValue16;
+    /**
      * Summary of cardsValue20
      * @var array<int, Card>
      */
@@ -31,6 +36,10 @@ class HandTest extends TestCase
     {
         parent::setUp();
 
+        $this->cardsValue16 = array(
+            new Card('ハート', 'Q'),
+            new Card('スペード', '6'),
+        );
         $this->cardsValue20 = array(
             new Card('ハート', 'A'),
             new Card('スペード', '9'),
@@ -240,5 +249,21 @@ class HandTest extends TestCase
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
         $property->setValue($object, $value);
+    }
+
+    public function testIsNotDealerHandOverStandLimit(): void
+    {
+        $stub = $this->getMockForAbstractClass(Hand::class);
+        $reflection = new ReflectionObject($stub);
+        $method = $reflection->getMethod('isNotDealerHandOverStandLimit');
+        $method->setAccessible(true);
+
+        // カード合計が17以上だとStand
+        $this->setPrivateProperty($stub, 'cards', $this->cardsValue20);
+        $this->assertFalse($method->invoke($stub));
+
+        // カード合計が17未満だとHit
+        $this->setPrivateProperty($stub, 'cards', $this->cardsValue16);
+        $this->assertTrue($method->invoke($stub));
     }
 }

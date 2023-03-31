@@ -5,6 +5,7 @@ namespace Blackjack;
 abstract class Hand
 {
     protected const BLACKJACK = 21;
+    protected const DEALER_STANDS_AT = 17;
     protected const INPUT_CHECK = array('Y', 'N');
     protected const CARD_DRAW_MSG = 'カードを引きますか？（Y/N）';
     protected const YN_INPUT_MSG = 'YかNで入力してください。';

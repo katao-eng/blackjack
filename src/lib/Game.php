@@ -9,9 +9,9 @@ use Blackjack\Hand;
 
 class Game
 {
-    private $deck;
-    private $player;
-    private $dealer;
+    private Deck $deck;
+    private Player $player;
+    private Dealer $dealer;
 
     public function start(): void
     {

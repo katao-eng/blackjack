@@ -5,6 +5,8 @@ namespace Blackjack;
 use Blackjack\Hand;
 use Blackjack\Deck;
 
+require_once(__DIR__ . '../../lib/Hand.php');
+
 class Player extends Hand
 {
     public function __construct()

@@ -7,6 +7,10 @@ use Blackjack\Player;
 use Blackjack\Dealer;
 use Blackjack\Hand;
 
+require_once(__DIR__ . '../../lib/Deck.php');
+require_once(__DIR__ . '../../lib/Player.php');
+require_once(__DIR__ . '../../lib/Dealer.php');
+
 class Game
 {
     private Deck $deck;

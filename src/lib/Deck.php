@@ -4,6 +4,8 @@ namespace Blackjack;
 
 use Blackjack\Card;
 
+require_once(__DIR__ . '../../lib/Card.php');
+
 class Deck
 {
     private const SUITS = array('ハート', 'クラブ', 'スペード', 'ダイヤ');

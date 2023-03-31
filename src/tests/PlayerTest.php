@@ -5,7 +5,6 @@ namespace Blackjack\Tests;
 use PHPUnit\Framework\TestCase;
 use Blackjack\Player;
 use Blackjack\Deck;
-use TestHelper;
 
 require_once(__DIR__ . '../../lib/Player.php');
 

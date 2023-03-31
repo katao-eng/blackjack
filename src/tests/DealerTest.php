@@ -16,7 +16,7 @@ class DealerTest extends TestCase
         $this->assertSame('ディーラー', $dealer->getName());
     }
 
-    public function testHitOrStand()
+    public function testHitOrStand(): void
     {
         $dealer = new Dealer();
         $deck = new Deck();
@@ -25,7 +25,7 @@ class DealerTest extends TestCase
         $this->assertGreaterThanOrEqual(17, $dealer->getValue());
     }
 
-    public function testShowSecondCard()
+    public function testShowSecondCard(): void
     {
         $dealer = new Dealer();
         $deck = new Deck();

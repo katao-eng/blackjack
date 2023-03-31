@@ -8,8 +8,8 @@ abstract class Hand
     protected const INPUT_CHECK = array('Y', 'N');
     protected const CARD_DRAW_MSG = 'カードを引きますか？（Y/N）';
     protected const YN_INPUT_MSG = 'YかNで入力してください。';
-    private const EVEN_MSG = '引き分けです。';
-    private const BLACKJACK_END_MSG = 'ブラックジャックを終了します。';
+    protected const EVEN_MSG = '引き分けです。';
+    protected const BLACKJACK_END_MSG = 'ブラックジャックを終了します。';
 
     protected string $name;
     /**
@@ -110,7 +110,7 @@ abstract class Hand
         return $this->getValue() > self::BLACKJACK;
     }
 
-    protected function getCurrentValueMsg(): string
+    public function getCurrentValueMsg(): string
     {
         return "{$this->name}の現在の得点は{$this->getValue()}です。";
     }

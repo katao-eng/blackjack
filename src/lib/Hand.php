@@ -114,4 +114,9 @@ abstract class Hand
     {
         return "{$this->name}の現在の得点は{$this->getValue()}です。";
     }
+
+    protected function isNotDealerHandOverStandLimit(): bool
+    {
+        return $this->getValue() < self::DEALER_STANDS_AT;
+    }
 }

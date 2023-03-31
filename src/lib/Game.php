@@ -42,6 +42,10 @@ class Game
 
         // プレイヤーのターン
         $this->player->hitOrStand($this->deck);
+        if ($this->player->isBusted()) {
+            Hand::compareHands($this->player, $this->dealer);
+            return;
+        }
         // ディーラーのターン
         $this->dealer->showSecondCard();
         $this->dealer->hitOrStand($this->deck);

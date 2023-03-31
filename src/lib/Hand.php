@@ -106,7 +106,7 @@ abstract class Hand
         return "{$winner->name}の勝ちです!";
     }
 
-    protected function isBusted(): bool
+    public function isBusted(): bool
     {
         return $this->getValue() > self::BLACKJACK;
     }

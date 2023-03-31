@@ -31,6 +31,10 @@ class Player extends Hand
                 $this->addCard($drawCard);
                 $this->showDrawCard($drawCard);
             }
+
+            if ($this->isBusted()) {
+                break;
+            }
         } while ($input === 'Y');
     }
 }

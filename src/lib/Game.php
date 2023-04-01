@@ -11,6 +11,7 @@ use Blackjack\ComputerPlayer;
 require_once(__DIR__ . '../../lib/Deck.php');
 require_once(__DIR__ . '../../lib/Player.php');
 require_once(__DIR__ . '../../lib/Dealer.php');
+require_once(__DIR__ . '../../lib/ComputerPlayer.php');
 
 class Game
 {
@@ -40,7 +41,7 @@ class Game
 
         echo self::BLACKJACK_START_MSG . PHP_EOL;
         $this->computerPlayers = ComputerPlayer::setComputerPlayers($this->computerPlayers);
-        array_push($this->players, $this->computerPlayers);
+        $this->players = array_merge($this->players, $this->computerPlayers);
 
         // プレイヤーごとに2枚ずつドロー
         foreach ($this->players as $player) {

@@ -9,8 +9,8 @@ abstract class Hand
     protected const INPUT_CHECK = array('Y', 'N');
     protected const CARD_DRAW_MSG = 'カードを引きますか？（Y/N）';
     protected const YN_INPUT_MSG = 'YかNで入力してください。';
-    protected const EVEN_MSG = '引き分けです。';
-    protected const BLACKJACK_END_MSG = 'ブラックジャックを終了します。';
+    private const EVEN_MSG = '引き分けです。';
+    private const BLACKJACK_END_MSG = 'ブラックジャックを終了します。';
 
     protected string $name;
     /**
@@ -66,7 +66,7 @@ abstract class Hand
 
     public function showHandValue(): void
     {
-        echo "{$this->name}の得点は{$this->getValue()}です。" . PHP_EOL;
+        echo "{$this->name}の得点は{$this->getValue()}です。";
     }
 
     public function addCard(Card $card): void
@@ -90,11 +90,11 @@ abstract class Hand
         $result = self::EVEN_MSG;
 
         if ($player->isBusted()) {
-            $result = self::getWinnerMsg($dealer);
+            $result = self::getLoserMsg($player);
         } elseif ($dealer->isBusted() || $player->getValue() > $dealer->getValue()) {
             $result = self::getWinnerMsg($player);
         } elseif ($dealer->getValue() > $player->getValue()) {
-            $result = self::getWinnerMsg($dealer);
+            $result = self::getLoserMsg($player);
         }
 
         echo $result . PHP_EOL;
@@ -106,12 +106,17 @@ abstract class Hand
         return "{$winner->name}の勝ちです!";
     }
 
+    private static function getLoserMsg(Hand $loser): string
+    {
+        return "{$loser->name}の負けです!";
+    }
+
     public function isBusted(): bool
     {
         return $this->getValue() > self::BLACKJACK;
     }
 
-    public function getCurrentValueMsg(): string
+    protected function getCurrentValueMsg(): string
     {
         return "{$this->name}の現在の得点は{$this->getValue()}です。";
     }

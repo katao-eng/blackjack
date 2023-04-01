@@ -18,13 +18,13 @@ class DealerTest extends TestCase
 
     public function testInitialDeal(): void
     {
-        $player = new Player();
+        $dealer = new Dealer();
         $deck = new Deck();
 
-        $this->assertSame(0, count($player->getCards()));
-        $player->initialDeal($deck);
+        $this->assertSame(0, count($dealer->getCards()));
+        $dealer->initialDeal($deck);
         // プレイヤーのハンドにカードが2枚追加されたことを確認
-        $this->assertSame(2, count($player->getCards()));
+        $this->assertSame(2, count($dealer->getCards()));
     }
 
     public function testHitOrStand(): void

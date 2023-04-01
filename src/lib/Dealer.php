@@ -14,6 +14,18 @@ class Dealer extends Hand
         $this->name = 'ディーラー';
     }
 
+    public function initialDeal(Deck $deck): void
+    {
+        // 1枚目ドロー
+        $card1 = $deck->dealCard();
+        $this->addCard($card1);
+        $this->showDrawCard($card1);
+        // 2枚目ドロー（非表示）
+        $card2 = $deck->dealCard();
+        $this->addCard($card2);
+        $this->hideDrawCard();
+    }
+
     public function hitOrStand(Deck $deck): void
     {
         do {

@@ -14,6 +14,18 @@ class Player extends Hand
         $this->name = 'あなた';
     }
 
+    public function initialDeal(Deck $deck): void
+    {
+        // 1枚目ドロー
+        $card1 = $deck->dealCard();
+        $this->addCard($card1);
+        $this->showDrawCard($card1);
+        // 2枚目ドロー
+        $card2 = $deck->dealCard();
+        $this->addCard($card2);
+        $this->showDrawCard($card2);
+    }
+
     public function hitOrStand(Deck $deck): void
     {
         do {

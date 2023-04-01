@@ -31,7 +31,7 @@ class ComputerPlayerTest extends TestCase
 
     public function testHitOrStand(): void
     {
-        $computerPlayer = new ComputerPlayer();
+        $computerPlayer = new ComputerPlayer('CPU');
         $deck = new Deck();
         $computerPlayer->hitOrStand($deck);
 
@@ -45,21 +45,14 @@ class ComputerPlayerTest extends TestCase
         $method = $reflection->getMethod('isNotValidPlayerCount');
         $method->setAccessible(true);
 
-        $constant = $reflection->getReflectionConstant('NON_COMPUTER_PLAYER');
-        $constant->setAccessible(true);
-        $constMin = $constant->getValue();
-
-        $constant = $reflection->getReflectionConstant('MAX_COMPUTER_PLAYER_QTY');
-        $constant->setAccessible(true);
-        $constMax = $constant->getValue();
-
+        $minCpuQty = 0;
+        $maxCpuQty = 2;
         // コンピュータープレイヤーの人数が下限から上限の範囲内であればfalse
-        $this->assertFalse($method->invokeArgs($computerPlayer, array("{$constMin}")));
-        $this->assertFalse($method->invokeArgs($computerPlayer, array("{$constMax}")));
-
+        $this->assertFalse($method->invokeArgs($computerPlayer, array($minCpuQty)));
+        $this->assertFalse($method->invokeArgs($computerPlayer, array($maxCpuQty)));
         // コンピュータープレイヤーの人数が下限に満たなければtrue
-        $this->assertTrue($method->invokeArgs($computerPlayer, array("{$constMin} - 1")));
+        $this->assertTrue($method->invokeArgs($computerPlayer, array($minCpuQty - 1)));
         // コンピュータープレイヤーの人数が上限を超えていればtrue
-        $this->assertTrue($method->invokeArgs($computerPlayer, array("{$constMax} + 1")));
+        $this->assertTrue($method->invokeArgs($computerPlayer, array($maxCpuQty + 1)));
     }
 }

@@ -15,4 +15,15 @@ class PlayerTest extends TestCase
         $player = new Player();
         $this->assertSame('あなた', $player->getName());
     }
+
+    public function testInitialDeal(): void
+    {
+        $player = new Player();
+        $deck = new Deck();
+
+        $this->assertSame(0, count($player->getCards()));
+        $player->initialDeal($deck);
+        // プレイヤーのハンドにカードが2枚追加されたことを確認
+        $this->assertSame(2, count($player->getCards()));
+    }
 }

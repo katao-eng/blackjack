@@ -66,7 +66,7 @@ abstract class Hand
 
     public function showHandValue(): void
     {
-        echo "{$this->name}の得点は{$this->getValue()}です。";
+        echo "{$this->name}の得点は{$this->getValue()}です。" . PHP_EOL;
     }
 
     public function addCard(Card $card): void

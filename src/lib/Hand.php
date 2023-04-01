@@ -10,7 +10,6 @@ abstract class Hand
     protected const CARD_DRAW_MSG = 'カードを引きますか？（Y/N）';
     protected const YN_INPUT_MSG = 'YかNで入力してください。';
     private const EVEN_MSG = '引き分けです。';
-    private const BLACKJACK_END_MSG = 'ブラックジャックを終了します。';
 
     protected string $name;
     /**
@@ -19,6 +18,7 @@ abstract class Hand
      */
     protected array $cards = array();
 
+    abstract public function initialDeal(Deck $deck): void;
     abstract public function hitOrStand(Deck $deck): void;
 
     public function getName(): string
@@ -98,7 +98,6 @@ abstract class Hand
         }
 
         echo $result . PHP_EOL;
-        echo self::BLACKJACK_END_MSG . PHP_EOL;
     }
 
     private static function getWinnerMsg(Hand $winner): string
@@ -106,7 +105,7 @@ abstract class Hand
         return "{$winner->name}の勝ちです!";
     }
 
-    private static function getLoserMsg(Hand $loser): string
+    public static function getLoserMsg(Hand $loser): string
     {
         return "{$loser->name}の負けです!";
     }

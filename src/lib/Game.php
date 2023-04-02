@@ -52,6 +52,7 @@ class Game
 
         // 各プレイヤーのターン
         foreach ($this->players as $i => $player) {
+            $this->displayCurrentTurn($player);
             $player->hitOrStand($this->deck);
             if ($player->isBusted()) {
                 $player->showHandValue();
@@ -67,6 +68,7 @@ class Game
         }
 
         // ディーラーのターン
+        $this->displayCurrentTurn($this->dealer);
         $this->dealer->showSecondCard();
         $this->dealer->hitOrStand($this->deck);
         $this->dealer->showHandValue();
@@ -77,5 +79,10 @@ class Game
             Hand::compareHands($player, $this->dealer);
         }
         echo self::BLACKJACK_END_MSG . PHP_EOL;
+    }
+
+    private function displayCurrentTurn(Hand $player): void
+    {
+        echo "{$player->getName()}のターンです。" . PHP_EOL;
     }
 }

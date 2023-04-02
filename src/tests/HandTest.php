@@ -177,14 +177,6 @@ class HandTest extends TestCase
         $stubDealer = $this->getMockForAbstractClass(Hand::class);
         $this->setPrivateProperty($stubDealer, 'name', 'ディーラー');
 
-        //Todo プレイヤーバースト時にはcompareHandsメソッド実行されないので、プレイヤーバースト時の条件分岐とテストを削除
-        // プレイヤーがバーストした場合
-        $this->setPrivateProperty($stubPlayer, 'cards', $this->cardsValue22);
-        $this->setPrivateProperty($stubDealer, 'cards', $this->cardsValue21);
-        $output = $this->compareHandsToString($stubPlayer, $stubDealer);
-        $expectedOuntput = 'プレイヤーの負けです!' . PHP_EOL;
-        $this->assertSame($expectedOuntput, $output);
-
         // ディーラーがバーストした場合
         $this->setPrivateProperty($stubPlayer, 'cards', $this->cardsValue21);
         $this->setPrivateProperty($stubDealer, 'cards', $this->cardsValue22);

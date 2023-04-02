@@ -89,9 +89,7 @@ abstract class Hand
     {
         $result = self::EVEN_MSG;
 
-        if ($player->isBusted()) {
-            $result = self::getLoserMsg($player);
-        } elseif ($dealer->isBusted() || $player->getValue() > $dealer->getValue()) {
+        if ($dealer->isBusted() || $player->getValue() > $dealer->getValue()) {
             $result = self::getWinnerMsg($player);
         } elseif ($dealer->getValue() > $player->getValue()) {
             $result = self::getLoserMsg($player);
